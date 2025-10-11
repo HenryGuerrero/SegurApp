@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Seleccionar Sede - SegurApp</title>
+    <link rel="icon" href="assets/img/LOGO-NEGRO.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/adminlte.css" />
+    <style>
+      body {
+        background: linear-gradient(135deg, #6c63ff 0%, #007bff 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .sede-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+        padding: 2.5rem 2rem 2rem 2rem;
+        max-width: 370px;
+        width: 100%;
+        text-align: center;
+      }
+      .sede-card h2 {
+        color: #6c63ff;
+        font-weight: 700;
+        margin-bottom: 1.5rem;
+      }
+      .sede-btn {
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 12px;
+        padding: 0.8rem 2rem;
+        margin: 0.5rem 0;
+        width: 100%;
+        transition: background 0.2s;
+      }
+      .sede-btn-lima {
+        background: #6c63ff;
+        color: #fff;
+        border: none;
+      }
+      .sede-btn-lima:hover {
+        background: #554eea;
+      }
+      .sede-btn-arequipa {
+        background: #007bff;
+        color: #fff;
+        border: none;
+      }
+      .sede-btn-arequipa:hover {
+        background: #0056b3;
+      }
+      .logo {
+        max-width: 120px;
+        margin-bottom: 1.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sede-card mx-auto">
+      <img src="assets/img/LOGO-NEGRO.png" alt="Logo" class="logo" />
+      <h2>Selecciona tu sede</h2>
+      <button class="sede-btn sede-btn-lima" onclick="selectSede('Lima')">Lima</button>
+      <button class="sede-btn sede-btn-arequipa" onclick="selectSede('Arequipa')">Arequipa</button>
+    </div>
+    <script>
+      function selectSede(sede) {
+        localStorage.setItem('sedeSeleccionada', sede);
+        window.location.href = 'Login.html';
+      }
+    </script>
+  </body>
+</html>
+<!-- Archivo renombrado, ahora es index.html -->
