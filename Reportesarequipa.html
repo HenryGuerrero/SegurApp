@@ -1,0 +1,728 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Seguridad Laboral - Reportes</title>
+    <link rel="icon" href="assets/img/LOGO-NEGRO.png">
+
+    <!-- Responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Color scheme -->
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+
+    <!-- Primary meta corrected -->
+    <meta name="title" content="Sistema de Reportes y Premios" />
+    <meta name="author" content="ColorlibHQ" />
+    <meta
+      name="description"
+      content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance."
+    />
+    <meta
+      name="keywords"
+      content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant"
+    />
+
+    <meta name="supported-color-schemes" content="light dark" />
+
+    <!-- Fonts & Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+      crossorigin="anonymous"
+    />
+
+    <!-- Third party -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/adminlte.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css" crossorigin="anonymous" />
+
+    <!-- Responsive tweaks: escala iconos, botones, logos -->
+    <style>
+      :root{
+        --nav-icon-size: clamp(16px, 2.2vw, 28px);
+        --user-image-size: clamp(28px, 4.2vw, 42px);
+        --brand-image-max: clamp(80px, 12vw, 140px);
+        --action-btn-width: clamp(140px, 34vw, 220px);
+        --action-btn-height: clamp(64px, 12vh, 100px);
+        --nav-padding-y: 0.35rem;
+      }
+      .app-header .nav-icon,
+      .app-header .bi,
+      .app-header .fas { font-size: var(--nav-icon-size); line-height: 1; }
+      .user-image { width: var(--user-image-size); height: var(--user-image-size); object-fit: cover; }
+      .brand-image { max-width: var(--brand-image-max); height: auto; }
+      .action-btn { width: var(--action-btn-width); height: var(--action-btn-height); display: flex; align-items: center; justify-content: center; gap: .6rem; padding: .6rem; text-align: center; }
+      .action-btn span { display: inline-block; font-size: clamp(.85rem, 1.6vw, 1rem); }
+      .app-header .nav-link { padding-top: var(--nav-padding-y); padding-bottom: var(--nav-padding-y); display: flex; align-items: center; gap: .5rem; }
+      @media (max-width: 420px) {
+        .app-header .navbar-nav > li > a .d-none-mobile-hide { display: none; }
+        .brand-text { font-size: .95rem; }
+      }
+      .app-content { padding-top: 2.5rem; padding-bottom: 3rem; }
+      .main-logo { max-width: clamp(120px, 28vw, 300px); width: 100%; height: auto; }
+      .dropdown .img-size-50 { width: 50px; height: 50px; object-fit: cover; }
+      @media (max-width: 991px) { aside.app-sidebar { position: relative; z-index: 1040; } }
+      a.nav-link:focus { outline: 3px solid rgba(0,123,255, .25); outline-offset: 2px; }
+      /* Chat y notificaciones dropdown estilos */
+      .dropdown-menu-lg {
+        min-width: 350px;
+        max-width: 400px;
+        width: 350px;
+        box-sizing: border-box;
+        border-radius: 12px;
+        margin-top: 8px;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        background: #fff;
+        left: auto !important;
+        right: 0 !important;
+        position: absolute !important;
+        top: 100% !important;
+        z-index: 9999 !important;
+        border: 1px solid #e5e7eb;
+      }
+      @media (max-width: 600px) {
+        .dropdown-menu-lg {
+          min-width: 100vw;
+          max-width: 100vw;
+          width: 100vw;
+          left: 0 !important;
+          right: 0 !important;
+          border-radius: 0 0 16px 16px;
+          margin: 0;
+          padding: 0.5rem 0.2rem 0.5rem 0.2rem;
+          box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+          position: fixed !important;
+          top: 56px !important;
+          z-index: 9999 !important;
+          border: 1px solid #e5e7eb;
+        }
+        #chatMessages {
+          font-size: 0.95rem;
+          max-height: 180px;
+          margin-bottom: 0.4rem;
+          padding: 0.3rem;
+        }
+        #chatForm .btn {
+          font-size: 1rem;
+          padding: 0.4rem 0.7rem;
+        }
+        #chatForm .input-group {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          width: 100%;
+        }
+        #chatInput {
+          border-radius: 8px 0 0 8px !important;
+          border: 1px solid #dee2e6;
+          flex: 1 1 auto;
+          min-width: 0;
+          font-size: 1rem;
+          background: #fff;
+        }
+        #chatForm .btn {
+          border-radius: 0 8px 8px 0 !important;
+          font-size: 1.2rem;
+          padding: 0.5rem 1rem;
+          margin-left: -1px;
+        }
+      }
+      #chatMessages {
+        max-height: 300px;
+        overflow-y: auto;
+        font-size: 1rem;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 0.5rem;
+        padding: 0.5rem;
+      }
+      #chatForm .input-group { flex-wrap: nowrap; }
+      #chatInput { font-size: 1rem; border-radius: 8px 0 0 8px; min-width: 0; width: 1px; flex: 1 1 auto; background: #f8f9fa; border: 1px solid #dee2e6; }
+      #chatForm .btn { border-radius: 0 8px 8px 0; font-size: 1.2rem; padding: 0.5rem 1rem; }
+    </style>
+  </head>
+  <style>
+  @media (min-width:601px){#chatDropdownMenu{left:auto!important;right:0!important;top:100%!important;position:absolute!important;min-width:clamp(340px,30vw,420px)!important;max-width:clamp(340px,30vw,420px)!important;width:clamp(340px,30vw,420px)!important;border-radius:12px!important;}}
+  </style>
+
+<!--begin::Body-->
+  <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+    <!--begin::App Wrapper-->
+    <div class="app-wrapper">
+      <!--begin::Header-->
+      <nav class="app-header navbar navbar-expand bg-body">
+        <!--begin::Container-->
+        <div class="container-fluid">
+          <!--begin::Start Navbar Links-->
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                <i class="bi bi-list text-dark"></i>
+              </a>
+            </li>
+          </ul>
+          <!--end::Start Navbar Links-->
+
+          <!--begin::End Navbar Links-->
+          <ul class="navbar-nav ms-auto align-items-center">
+
+
+            <!--begin::Messages Dropdown Menu-->
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-chat-text" aria-hidden="true"></i>
+                <span class="navbar-badge badge text-bg-danger" id="chatCount">0</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="chatDropdownMenu" style="min-width:350px;">
+                <div id="chatMessages" style="max-height:300px; overflow-y:auto; padding:10px 0;"></div>
+                <div class="dropdown-divider"></div>
+                <form id="chatForm" class="px-3 pb-2">
+                  <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje..." autocomplete="off" required />
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i></button>
+                  </div>
+                </form>
+              </div>
+            </li>
+            <!--end::Messages Dropdown Menu-->
+            <!--begin::Notifications Dropdown Menu-->
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-bell-fill" aria-hidden="true"></i>
+                <span class="navbar-badge badge text-bg-warning" id="notificacionesCount">0</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="notificacionesDropdownMenu">
+                <!-- Notificaciones dinámicas -->
+              </div>
+            </li>
+            <!--end::Notifications Dropdown Menu-->
+
+            <!--begin::Fullscreen Toggle-->
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-lte-toggle="fullscreen" aria-label="Pantalla completa">
+                <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+                <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none" aria-hidden="true"></i>
+              </a>
+            </li>
+            <!--end::Fullscreen Toggle-->
+
+            <!--begin::User Menu Dropdown-->
+      <li class="nav-item dropdown custom-user-menu">
+  <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <img id="userImage" src="./assets/img/user2-160x160.jpg" alt="User Image" class="rounded-circle shadow user-img me-2" width="35" height="35" />
+  <span id="userName" class="d-none d-md-inline fw-semibold text-white">Usuario</span>
+  </a>
+
+  <ul class="dropdown-menu dropdown-menu-end shadow animated fadeIn" aria-labelledby="userDropdown">
+  <!-- Silueta gris para foto de perfil -->
+  <style>
+    .profile-silhouette {
+      filter: grayscale(1) brightness(1.2);
+      background: #e0e0e0;
+      object-fit: cover;
+    }
+  </style>
+    <li class="px-3 py-3 text-center bg-primary text-white custom-header">
+      <img id="userImageLarge" src="./assets/img/user2-160x160.jpg" alt="User Image" class="rounded-circle shadow mb-2" width="80" height="80" style="object-fit:cover;" />
+  <p id="userFullName" class="mb-0 fw-bold">Perfil: <span id="userEmail">demo@segurapp.com</span></p>
+  <small id="userSince" class="text-light">Soporte</small>
+    </li>
+
+    <li class="px-3 py-2 text-center">
+    <!-- Eliminado sección de Followers, Sales y Friends -->
+
+    <li class="d-flex justify-content-between px-3 py-3 border-top">
+  <button id="changePhotoBtn" class="btn btn-sm btn-outline-primary rounded-pill fw-semibold">Cambiar foto</button>
+  <button id="sessionBtn" class="btn btn-sm btn-outline-danger rounded-pill fw-semibold">Cerrar sesión</button>
+    </li>
+  </ul>
+</li>
+
+<style>
+  .custom-user-menu .dropdown-menu {
+    min-width: 260px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+  }
+  .custom-user-menu .dropdown-menu li {
+    font-size: 0.9rem;
+  }
+  .custom-user-menu .custom-header {
+    background: #6c63ff !important;
+  }
+  .custom-user-menu img.user-img {
+    border: 2px solid #6c63ff;
+  }
+  .custom-user-menu a.dropdown-toggle {
+    color: #fff;
+    text-decoration: none;
+  }
+  .custom-user-menu a.dropdown-toggle:hover {
+    color: #ddd;
+  }
+  .custom-user-menu .btn {
+    font-size: 0.85rem;
+    padding: 0.4rem 1rem;
+  }
+  .custom-user-menu .btn-outline-primary:hover {
+    background-color: #6c63ff;
+    color: #fff;
+  }
+  .custom-user-menu .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+  }
+  /* Animación de entrada suave */
+  .animated.fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+  // Mostrar/ocultar info de perfil según sesión
+  let demoEmail = localStorage.getItem('userEmail');
+  const userSection = document.querySelector('.custom-header');
+    if (!demoEmail && userSection) {
+      userSection.style.display = 'none';
+    }
+  // Botón cambiar foto
+  document.getElementById('changePhotoBtn').addEventListener('click', function() {
+    alert('Función para cambiar foto de perfil (demo)');
+    // Aquí puedes abrir un modal o input file para cambiar la foto
+  });
+  // Botón sesión
+  const sessionBtn = document.getElementById('sessionBtn');
+if (demoEmail) {
+  sessionBtn.textContent = 'Cerrar sesión';
+  sessionBtn.onclick = function() {
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('profilePhoto');
+    localStorage.removeItem('sedeSeleccionada');
+  window.location.href = 'index.html';
+  };
+} else {
+  sessionBtn.textContent = 'Iniciar sesión';
+  sessionBtn.onclick = function() {
+  window.location.href = 'index.html';
+  };
+}
+  // Simula los datos del usuario que vienen del backend o sesión
+  const userData = {
+    name: "Alexander Pierce",
+    role: "Web Developer",
+    memberSince: "Nov. 2023",
+    image: "./assets/img/user2-160x160.jpg"
+  };
+
+  // Carga los datos dinámicamente
+  // Mostrar correo demo si existe en localStorage
+  demoEmail = demoEmail || 'demo@segurapp.com';
+  function setProfilePhoto(src, isSilhouette = false) {
+    const userImg = document.getElementById('userImage');
+    const userImgLarge = document.getElementById('userImageLarge');
+    userImg.src = src;
+    userImgLarge.src = src;
+    if (isSilhouette) {
+      userImg.classList.add('profile-silhouette');
+      userImgLarge.classList.add('profile-silhouette');
+    } else {
+      userImg.classList.remove('profile-silhouette');
+      userImgLarge.classList.remove('profile-silhouette');
+    }
+  }
+  let savedPhoto = localStorage.getItem('profilePhoto');
+  if (demoEmail && savedPhoto) {
+    setProfilePhoto(savedPhoto);
+  } else if (demoEmail) {
+    setProfilePhoto('./assets/img/user2-160x160.jpg');
+  } else {
+    setProfilePhoto('https://cdn.jsdelivr.net/gh/feathericons/feather/icons/user.svg', true);
+  }
+  document.getElementById('userName').textContent = demoEmail;
+  document.getElementById('userEmail').textContent = demoEmail;
+  document.getElementById('userFullName').textContent = `Perfil: ${demoEmail}`;
+  document.getElementById('userSince').textContent = `Soporte`;
+
+  // Función cerrar sesión
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    // Aquí va la lógica para cerrar sesión, por ejemplo:
+    // 1. Llamar a tu API logout
+    // 2. Limpiar sesión/localStorage
+    // 3. Redirigir a login
+
+    alert("Cerrando sesión...");
+    // Ejemplo: window.location.href = "/logout";
+  });
+</script>
+                <!--end::Menu Footer-->
+              </ul>
+            </li>
+            <!--end::User Menu Dropdown-->
+          </ul>
+          <!--end::End Navbar Links-->
+        </div>
+        <!--end::Container-->
+      </nav>
+      <!--end::Header-->
+<!--begin::Sidebar-->
+
+      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+       
+        <!--begin::Sidebar Brand-->
+        <div class="sidebar-brand">
+          <!--begin::Brand Link-->
+          <a href="./indexarequipa.html" class="brand-link">
+            <!--begin::Brand Image-->
+            <img
+              src="./assets/img/LOGOS_Mesa de trabajo 1-03.png"
+              alt="AdminLTE Logo"
+              class="brand-image opacity-75 shadow"
+            />
+            <!--end::Brand Image-->
+            <!--begin::Brand Text-->
+            <span class="brand-text fw-light">Sistema de reporte</span>
+            <!--end::Brand Text-->
+          </a>
+          <!--end::Brand Link-->
+        </div>
+        <!--end::Sidebar Brand-->
+        <!--begin::Sidebar Wrapper-->
+        <div class="sidebar-wrapper">
+          <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="navigation">
+              <li class="nav-header">Reporte</li>
+              <li class="nav-item"><a href="EjemplosReportes.html" class="nav-link"><i class="bi bi-file-text"></i> Mis reportes</a></li>
+              <li class="nav-item"><a href="TodosReportes.html" class="nav-link"><i class="bi bi-clipboard-check"></i><p>Todos los reportes</p></a></li>
+              <li class="nav-header">Soporte</li>
+              <li class="nav-item"><a href="https://wa.me/51946428494?text=hola,%20necesito%20ayuda%20con%20la%20app%20web" class="nav-link" target="_blank"><i class="bi bi-question-circle"></i><p>Ayuda</p></a></li>
+              <li class="nav-header">Información</li>
+
+              <li class="nav-item"><a href="./assets/documentos/actos y condiciones inseguras.pdf" class="nav-link" download><i class="bi bi-file-earmark-text"></i><p>Tipos de reportes</p></a></li>
+              <li class="nav-item"><a href="./assets/documentos/actos y condiciones inseguras.pdf" class="nav-link" download><i class="bi bi-exclamation-triangle"></i><p>¿Qué es un acto o condición insegura?</p></a></li>
+            </ul>
+          </nav>
+        </div>
+        <!-- Fin Sidebar Wrapper -->
+      </aside>
+      <!--end::Sidebar-->
+
+      <!--begin::App Main-->
+      <main class="app-main">
+        <!--begin::App Content Header-->
+        <div class="app-content">
+          <div class="container-fluid d-flex flex-column align-items-center justify-content-center" style="min-height: 80vh;">
+
+
+
+<!-- Formulario de Reporte de Riesgo -->
+      <section class="container py-4">
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-8 col-lg-6">
+            <form id="formReporte" class="bg-white p-4 rounded shadow report-form">
+              <h2 class="mb-4 text-primary text-center">Registrar Reporte de Seguridad</h2>
+              <div class="mb-3">
+                <label for="tipoRiesgo" class="form-label fw-semibold">Tipo de Riesgo</label>
+                <select id="tipoRiesgo" name="tipoRiesgo" class="form-select" required>
+                  <option value="" disabled selected>Seleccione</option>
+                  <option value="bajo">Bajo</option>
+                  <option value="medio">Medio</option>
+                  <option value="alto">Alto</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="descripcion" class="form-label fw-semibold">Descripción</label>
+                <textarea id="descripcion" name="descripcion" class="form-control" rows="3" placeholder="Describe el riesgo..." required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="area" class="form-label fw-semibold">Área</label>
+                <input type="text" id="area" name="area" class="form-control" placeholder="Ej. Administración, Intructor" required />
+              </div>
+              <div class="mb-3">
+                <label for="fotoGaleria" class="form-label fw-semibold">Seleccionar Foto (galería)</label>
+                <input type="file" id="fotoGaleria" name="fotoGaleria" class="form-control" accept="image/*" />
+              </div>
+              <div class="mb-3">
+                <label for="fotoCamara" class="form-label fw-semibold">Tomar foto (cámara)</label>
+                <input type="file" id="fotoCamara" name="fotoCamara" class="form-control" accept="image/*" capture="environment" />
+              </div>
+              <button type="submit" class="btn btn-primary w-100 fw-bold">Enviar Reporte</button>
+              <div id="mensaje" class="mt-3 text-center"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          const form = document.getElementById('formReporte');
+          const mensaje = document.getElementById('mensaje');
+          form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!form.checkValidity()) {
+              mensaje.textContent = 'Por favor, completa todos los campos requeridos.';
+              mensaje.style.color = 'red';
+              return;
+            }
+            mensaje.textContent = '¡Reporte enviado exitosamente!';
+            mensaje.style.color = 'green';
+            form.reset();
+            setTimeout(() => { mensaje.textContent = ''; }, 3000);
+          });
+        });
+      </script>
+      <!-- Fin Formulario -->
+        <!--end::App Content-->
+      </main>
+      <!--end::App Main-->
+
+      <!--begin::Footer-->
+      <footer class="app-footer text-center py-2 bg-body-secondary">
+        <small>© 2025 SegurApp - Todos los derechos reservados</small>
+      </footer>
+      <!--end::Footer-->
+    </div>
+    <!--end::App Wrapper-->
+
+    <!--begin::Script-->
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+      // Configura tu proyecto Firebase aquí
+      const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+      };
+      if (!window.firebase?.apps?.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    </script>
+    <!--begin::Third Party Plugin(OverlayScrollbars)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Third Party Plugin(OverlayScrollbars)-->
+    <!--begin::Required Plugin(popperjs for Bootstrap 5)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Required Plugin(popperjs for Bootstrap 5)-->
+    <!--begin::Required Plugin(Bootstrap 5)-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--end::Required Plugin(Bootstrap 5)-->
+    <!--begin::Required Plugin(AdminLTE)-->
+    <script src="./js/adminlte.js"></script>
+    <!--end::Required Plugin(AdminLTE)-->
+    <!--begin::OverlayScrollbars Configure-->
+    <script>
+      const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
+      const Default = {
+        scrollbarTheme: 'os-theme-light',
+        scrollbarAutoHide: 'leave',
+        scrollbarClickScroll: true,
+      };
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
+        if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
+          OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, {
+            scrollbars: {
+              theme: Default.scrollbarTheme,
+              autoHide: Default.scrollbarAutoHide,
+              clickScroll: Default.scrollbarClickScroll,
+            },
+          });
+        }
+      });
+
+      // Notificaciones dinámicas de reportes
+      const notificacionesDropdown = document.getElementById('notificacionesDropdownMenu');
+      const notificacionesBadge = document.getElementById('notificacionesCount');
+      if (window.firebase && window.firebase.firestore) {
+        const db = firebase.firestore();
+        db.collection('reportes').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+          let count = 0;
+          let html = '<span class="dropdown-item dropdown-header">' + snapshot.size + ' Notificaciones</span><div class="dropdown-divider"></div>';
+          if (snapshot.size === 0) {
+            html += '<div class="dropdown-item text-center text-muted">No hay notificaciones</div><div class="dropdown-divider"></div>';
+          }
+          snapshot.forEach(doc => {
+            const r = doc.data();
+            html += `<a href="#" class="dropdown-item d-flex align-items-start gap-2">
+              <i class="bi bi-exclamation-triangle-fill text-warning fs-5 mt-1"></i>
+              <div class="flex-grow-1">
+                <span>Nuevo reporte: ${r.titulo || 'Sin título'}</span>
+                <div class="text-muted small">${r.usuario || 'Anónimo'} - ${r.fecha || ''}</div>
+              </div>
+            </a><div class="dropdown-divider"></div>`;
+            count++;
+          });
+          html += '<a href="notificaciones.html" class="dropdown-item dropdown-footer text-primary fw-semibold">Ver todas las notificaciones</a>';
+          notificacionesDropdown.innerHTML = html;
+          notificacionesBadge.textContent = count;
+        });
+
+        // Chat en vivo
+        const chatMessages = document.getElementById('chatMessages');
+        const chatForm = document.getElementById('chatForm');
+        const chatInput = document.getElementById('chatInput');
+        const chatCount = document.getElementById('chatCount');
+        db.collection('chat').orderBy('timestamp').onSnapshot(snapshot => {
+          chatMessages.innerHTML = '';
+          let count = 0;
+          snapshot.forEach(doc => {
+            const msg = doc.data();
+            const div = document.createElement('div');
+            div.className = 'px-3 py-2';
+            div.innerHTML = `<strong>${msg.user || 'Anónimo'}:</strong> ${msg.text}`;
+            chatMessages.appendChild(div);
+            count++;
+          });
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+          chatCount.textContent = count;
+        });
+        chatForm.addEventListener('submit', function(e) {
+          e.preventDefault();
+          const text = chatInput.value.trim();
+          if (text) {
+            db.collection('chat').add({
+              text,
+              user: window.userData?.name || 'Anónimo',
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            chatInput.value = '';
+          }
+        });
+      }
+    </script>
+    <!--end::OverlayScrollbars Configure-->
+
+    <!-- OPTIONAL SCRIPTS -->
+    <!-- sortablejs -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      new Sortable(document.querySelector('.connectedSortable'), {
+        group: 'shared',
+        handle: '.card-header',
+      });
+
+      const cardHeaders = document.querySelectorAll('.connectedSortable .card-header');
+      cardHeaders.forEach((cardHeader) => {
+        cardHeader.style.cursor = 'move';
+      });
+    </script>
+    <!-- apexcharts -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/apexcharts@3.37.1/dist/apexcharts.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <!-- ChartJS demo (kept original comment) -->
+    <script>
+      // NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
+      // IT'S ALL JUST JUNK FOR DEMO
+      // ++++++++++++++++++++++++++++++++++++++++++
+
+      const sales_chart_options = {
+        series: [
+          {
+            name: 'Digital Goods',
+            data: [28, 48, 40, 19, 86, 27, 90],
+          },
+          {
+            name: 'Electronics',
+            data: [65, 59, 80, 81, 56, 55, 40],
+          },
+        ],
+        chart: {
+          height: 300,
+          type: 'area',
+          toolbar: {
+            show: false,
+          },
+        },
+        legend: {
+          show: false,
+        },
+        colors: ['#0d6efd', '#20c997'],
+        dataLabels: {
+          enabled: false,
+        },
+        stroke: {
+          curve: 'smooth',
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: [
+            '2023-01-01',
+            '2023-02-01',
+            '2023-03-01',
+            '2023-04-01',
+            '2023-05-01',
+            '2023-06-01',
+            '2023-07-01',
+          ],
+        },
+        tooltip: {
+          x: {
+            format: 'MMMM yyyy',
+          },
+        },
+      };
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const el = document.querySelector('#revenue-chart');
+        if (el && typeof ApexCharts !== 'undefined') {
+          const sales_chart = new ApexCharts(el, sales_chart_options);
+          sales_chart.render();
+        }
+      });
+    </script>
+
+    <!-- jsvectormap -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      if (typeof jsVectorMap !== 'undefined') {
+        new jsVectorMap({
+          selector: '#world-map',
+          map: 'world',
+        });
+      }
+    </script>
+    <!--end::Script-->
+  </body>
+</html>

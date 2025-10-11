@@ -1,0 +1,133 @@
+body {
+  background: #f4f6f9;
+  min-height: 100vh;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.main-panel {
+  margin-left: 220px;
+  padding: 2rem 1rem;
+  transition: margin-left 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+}
+
+.app-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.card.shadow.rounded-4.p-4 {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+}
+
+.table-responsive {
+  font-size: 1rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(30,58,138,0.07);
+  padding: 0.5rem;
+  margin-top: 1.5rem;
+  overflow-x: auto;
+}
+
+.table-editable th {
+  background: #eaf1fb;
+  color: #2563eb;
+  font-weight: 700;
+  font-size: 1.08em;
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+}
+.table-editable td {
+  background: #23272b;
+  color: #fff;
+  border: none;
+  text-align: center;
+  vertical-align: middle;
+}
+.table-editable td input {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 1rem;
+  padding: 4px;
+  transition: background 0.2s, outline 0.2s;
+}
+.table-editable td input:focus {
+  outline: 2px solid #2563eb;
+  background: #eaf1fb;
+  color: #222;
+}
+.btn, .btn-sm {
+  font-size: clamp(0.85rem, 2vw, 1rem);
+  min-width: 36px;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.download-btns {
+  gap: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .card.shadow.rounded-4.p-4 {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem;
+  }
+}
+@media (max-width: 900px) {
+  .sidebar {
+    min-width: 60px;
+    width: 60px;
+    padding: 0.5rem 0.2rem;
+    border-radius: 0 12px 12px 0;
+    left: 0;
+  }
+  .sidebar h4 { display: none; }
+  .sidebar a { justify-content: center; gap: 0; padding: 14px 0; font-size: 1.1em; }
+  .sidebar a .sidebar-text { display: none; }
+  .sidebar a i { margin-right: 0; font-size: 1.4em; }
+  .main-panel { margin-left: 0; padding: 1rem 0.2rem; }
+  .card.shadow.rounded-4.p-4 { max-width: 100vw; padding: 1rem 0.2rem; }
+  .table-responsive { padding: 0.2rem; }
+}
+@media (max-width: 600px) {
+  .sidebar {
+    position: fixed;
+    left: -100vw;
+    width: 70vw;
+    min-width: 0;
+    height: 100vh;
+    border-radius: 0 18px 18px 0;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.18);
+  }
+  .sidebar.open {
+    left: 0;
+  }
+  .main-panel { margin-left: 0; padding: 0.5rem 0.1rem; }
+  .card.shadow.rounded-4.p-4 { max-width: 100vw; padding: 0.5rem 0.1rem; }
+  .table-responsive { padding: 0.1rem; }
+  .main-header { flex-direction: column; align-items: flex-start !important; gap: 0.3rem; }
+  .main-header .login-user { font-size: 0.95em; }
+  .sidebar-toggle { margin-left: 0; }
+}

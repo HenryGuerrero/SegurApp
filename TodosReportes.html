@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Todos los Reportes | SegurApp</title>
+    <link rel="icon" href="assets/img/LOGO-NEGRO.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    <meta name="title" content="Sistema de Reportes y Premios" />
+    <meta name="author" content="ColorlibHQ" />
+    <meta name="description" content="Listado de todos los reportes del sistema" />
+    <meta name="keywords" content="reportes, seguridad, listado" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/adminlte.css" />
+    <link rel="stylesheet" href="./css/perfil-menu.css" />
+    <style>
+      html, body { height:100%; -webkit-text-size-adjust:100%; }
+      body { overflow:hidden; }
+      .app-wrapper { height:100%; display:flex; flex-direction:column; }
+      .app-main { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; overflow-y:auto; -webkit-overflow-scrolling:touch; scroll-behavior:smooth; }
+      .app-content { flex:1 1 auto; padding-top: 2.5rem; padding-bottom: 3rem; }
+      :root{ --dvph:100vh; --nav-icon-size: clamp(16px, 2.2vw, 28px); --user-image-size: clamp(28px, 4.2vw, 42px); --brand-image-max: clamp(80px, 12vw, 140px); --action-btn-width: clamp(140px, 34vw, 220px); --action-btn-height: clamp(64px, 12vh, 100px); --nav-padding-y: 0.35rem; }
+      @supports (height:100dvh){ :root{ --dvph:100dvh; } }
+      .app-main { min-height: calc(var(--dvph) - 56px); }
+      .app-header .nav-icon, .app-header .bi, .app-header .fas { font-size: var(--nav-icon-size); line-height: 1; }
+      .user-image, .user-header img.rounded-circle { width: var(--user-image-size); height: var(--user-image-size); object-fit: cover; }
+      .brand-image { max-width: var(--brand-image-max); height: auto; }
+      .report-list { display:flex; flex-wrap:wrap; gap:clamp(12px,1.6vw,24px); justify-content:center; }
+      .report-card { background:#fff; border-radius:14px; box-shadow:0 2px 10px rgba(0,0,0,.07); padding:16px 18px 14px; display:flex; flex-direction:column; gap:8px; flex:1 1 clamp(260px,30%,420px); border-left:5px solid #0d6efd; animation:fadeIn .4s ease both; position:relative; }
+      .report-card:hover { box-shadow:0 6px 18px rgba(0,0,0,.15); transform:translateY(-3px); }
+      .report-title { font-size:1.05rem; font-weight:600; color:#0d6efd; margin:0; }
+      .report-meta { font-size:.78rem; color:#6c757d; letter-spacing:.3px; text-transform:uppercase; }
+      .report-desc { font-size:.9rem; margin:0; line-height:1.32; color:#222; }
+      .report-icon { position:absolute; top:10px; right:12px; font-size:1.6rem; opacity:.15; }
+      @media (max-width: 768px){ .report-card { flex:1 1 46%; } }
+      @media (max-width: 560px){ .report-card { flex:1 1 100%; } }
+      @keyframes fadeIn { from { opacity:0; transform:translateY(12px);} to { opacity:1; transform:translateY(0);} }
+      .filter-bar { display:flex; flex-wrap:wrap; gap:12px; margin-bottom:22px; align-items:center; }
+      .filter-bar select, .filter-bar input { max-width:220px; }
+      .empty-msg { text-align:center; padding:40px 10px; color:#666; }
+      .badge-area { font-size:.65rem; background:#e9f2ff; color:#0d6efd; padding:2px 6px; border-radius:20px; letter-spacing:.5px; }
+    </style>
+    <style>
+      @media (min-width:601px){
+        #chatDropdownMenu{left:auto!important;right:0!important;top:100%!important;position:absolute!important;min-width:clamp(340px,30vw,420px)!important;max-width:clamp(340px,30vw,420px)!important;width:clamp(340px,30vw,420px)!important;border-radius:12px!important;}
+      }
+    </style>
+  </head>
+  <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+    <div class="app-wrapper">
+      <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" data-lte-toggle="sidebar" href="#" role="button"><i class="bi bi-list text-dark"></i></a></li>
+          </ul>
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-chat-text" aria-hidden="true"></i>
+                <span class="navbar-badge badge text-bg-danger" id="chatCount">0</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="chatDropdownMenu" style="min-width:320px; max-width:100vw; left:0; right:0;">
+                <div id="chatMessages" style="max-height:300px; overflow-y:auto; padding:10px 0;"></div>
+                <div class="dropdown-divider"></div>
+                <form id="chatForm" class="px-3 pb-2">
+                  <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje..." autocomplete="off" required />
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i></button>
+                  </div>
+                </form>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false"><i class="bi bi-bell-fill" aria-hidden="true"></i><span class="navbar-badge badge text-bg-warning" id="notificacionesCount">0</span></a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="notificacionesDropdownMenu"></div>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#" data-lte-toggle="fullscreen" aria-label="Pantalla completa"><i data-lte-icon="maximize" class="bi bi-arrows-fullscreen" aria-hidden="true"></i><i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none" aria-hidden="true"></i></a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <img src="./assets/img/user2-160x160.jpg" class="user-image rounded-circle" id="userImage" alt="Usuario" />
+                <span id="userName" class="d-none d-md-inline ms-2"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <div class="dropdown-item-text p-0" style="min-width:240px;">
+                  <div style="background:#6c63ff; border-radius:12px 12px 0 0; padding:24px 0 16px 0; text-align:center;">
+                    <img src="./assets/img/user2-160x160.jpg" class="rounded-circle shadow mb-2" alt="Usuario" style="width:72px; height:72px; object-fit:cover; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+                    <div class="fw-bold mt-2" id="userFullName" style="font-size:1.12rem; color:#fff;"></div>
+                    <div class="text-light small mb-1" id="userSince" style="color:#f3f3f3;">Soporte</div>
+                  </div>
+                  <div class="px-3 py-3" style="background:#fff; border-radius:0 0 12px 12px;">
+                    <div class="profile-btn-row">
+                      <button class="profile-btn profile-btn-primary" id="changePhotoBtn">Cambiar foto</button>
+                      <button class="profile-btn profile-btn-danger" id="logoutBtn">Cerrar sesión</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+        <div class="sidebar-brand">
+          <a href="./inicio.html" class="brand-link">
+            <img src="./assets/img/LOGOS_Mesa de trabajo 1-03.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+            <span class="brand-text fw-light">Sistema de reporte</span>
+          </a>
+        </div>
+        <div class="sidebar-wrapper">
+          <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="navigation">
+              <li class="nav-header">Reporte</li>
+              <li class="nav-item"><a href="EjemplosReportes.html" class="nav-link"><i class="bi bi-file-text"></i> Mis reportes</a></li>
+              <li class="nav-item"><a href="TodosReportes.html" class="nav-link active"><i class="bi bi-clipboard-check"></i><p>Todos los reportes</p></a></li>
+              <li class="nav-header">Soporte</li>
+              <li class="nav-item"><a href="https://wa.me/51946428494?text=hola,%20necesito%20ayuda%20con%20la%20app%20web" class="nav-link" target="_blank"><i class="bi bi-question-circle"></i><p>Ayuda</p></a></li>
+              <li class="nav-header">Información</li>
+              <li class="nav-item"><a href="./assets/documentos/actos y condiciones inseguras.pdf" class="nav-link" download><i class="bi bi-file-earmark-text"></i><p>Tipos de reportes</p></a></li>
+              <li class="nav-item"><a href="./assets/documentos/actos y condiciones inseguras.pdf" class="nav-link" download><i class="bi bi-exclamation-triangle"></i><p>¿Qué es un acto o condición insegura?</p></a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+      <main class="app-main">
+        <div class="app-content">
+          <div class="container">
+            <h2 class="mb-4 fw-bold text-primary text-center"><i class="bi bi-clipboard-check me-2"></i> Todos los reportes</h2>
+            <div class="filter-bar">
+              <input type="text" id="buscarTexto" class="form-control form-control-sm" placeholder="Buscar por título, descripción o área..." />
+              <select id="filtroArea" class="form-select form-select-sm">
+                <option value="">Área (todas)</option>
+                <option value="Producción">Producción</option>
+                <option value="Almacén">Almacén</option>
+                <option value="Oficina">Oficina</option>
+                <option value="Taller">Taller</option>
+                <option value="Planta">Planta</option>
+                <option value="Mantenimiento">Mantenimiento</option>
+                <option value="Administración">Administración</option>
+                <option value="Cocina">Cocina</option>
+              </select>
+              <select id="filtroMes" class="form-select form-select-sm">
+                <option value="">Mes (todos)</option>
+                <option value="0">Enero</option>
+                <option value="1">Febrero</option>
+                <option value="2">Marzo</option>
+                <option value="3">Abril</option>
+                <option value="4">Mayo</option>
+                <option value="5">Junio</option>
+                <option value="6">Julio</option>
+                <option value="7">Agosto</option>
+                <option value="8">Septiembre</option>
+                <option value="9">Octubre</option>
+                <option value="10">Noviembre</option>
+                <option value="11">Diciembre</option>
+              </select>
+              <div class="d-flex gap-2">
+                <button id="btnLimpiar" class="btn btn-sm btn-outline-secondary"><i class="bi bi-x-circle"></i> Limpiar</button>
+                <button id="btnBuscar" class="btn btn-sm btn-primary"><i class="bi bi-search"></i> Buscar</button>
+              </div>
+            </div>
+            <div id="listaReportes" class="report-list" aria-live="polite"></div>
+            <div id="msgVacio" class="empty-msg d-none">No se encontraron reportes con esos filtros.</div>
+          </div>
+        </div>
+      </main>
+      <footer class="app-footer text-center py-2 bg-body-secondary"><small>© 2025 SegurApp - Todos los derechos reservados</small></footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="./js/adminlte.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const email = localStorage.getItem('userEmail') || 'demo@segurapp.com';
+        document.getElementById('userName').textContent = email;
+        document.getElementById('userFullName').textContent = 'Perfil: ' + email;
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) logoutBtn.addEventListener('click', () => { localStorage.clear(); sessionStorage.clear(); window.location.href='index.html'; });
+      });
+      const firebaseConfig = { apiKey: "TU_API_KEY", authDomain: "TU_AUTH_DOMAIN", projectId: "TU_PROJECT_ID", storageBucket: "TU_STORAGE_BUCKET", messagingSenderId: "TU_MESSAGING_SENDER_ID", appId: "TU_APP_ID" };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      const notificacionesDropdown = document.getElementById('notificacionesDropdownMenu');
+      const notificacionesBadge = document.getElementById('notificacionesCount');
+      db.collection('reportes').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        let count = 0; let html = '<span class="dropdown-item dropdown-header">' + snapshot.size + ' Notificaciones</span><div class="dropdown-divider"></div>';
+        snapshot.forEach(doc => { const r = doc.data(); html += `<a href="#" class="dropdown-item d-flex align-items-start gap-2">\n<i class=\"bi bi-exclamation-triangle-fill text-warning fs-5 mt-1\"></i>\n<div class=\"flex-grow-1\"><span>Nuevo reporte: ${r.titulo || 'Sin título'}</span><div class=\"text-muted small\">${r.usuario || 'Anónimo'} - ${r.fecha || ''}</div></div></a><div class=\"dropdown-divider\"></div>`; count++; });
+        html += '<a href="notificaciones.html" class="dropdown-item dropdown-footer text-primary fw-semibold">Ver todas las notificaciones</a>'; notificacionesDropdown.innerHTML = html; notificacionesBadge.textContent = count; });
+      // Chat
+      const chatMessages = document.getElementById('chatMessages');
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatCount = document.getElementById('chatCount');
+      db.collection('chat').orderBy('timestamp').onSnapshot(snapshot => { chatMessages.innerHTML=''; let count=0; snapshot.forEach(doc=>{ const msg=doc.data(); const div=document.createElement('div'); div.className='px-3 py-2'; div.innerHTML=`<strong>${msg.user || 'Anónimo'}:</strong> ${msg.text}`; chatMessages.appendChild(div); count++; }); chatMessages.scrollTop = chatMessages.scrollHeight; chatCount.textContent = count; });
+      chatForm.addEventListener('submit', e => { e.preventDefault(); const text=chatInput.value.trim(); if(text){ db.collection('chat').add({ text, user: window.userData?.name || 'Anónimo', timestamp: firebase.firestore.FieldValue.serverTimestamp() }); chatInput.value=''; } });
+      // Carga y filtrado de reportes
+      const contenedor = document.getElementById('listaReportes');
+      const buscarTexto = document.getElementById('buscarTexto');
+      const filtroArea = document.getElementById('filtroArea');
+      const filtroMes = document.getElementById('filtroMes');
+      const btnLimpiar = document.getElementById('btnLimpiar');
+      const msgVacio = document.getElementById('msgVacio');
+      const mesesES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+      let dataCache = [];
+      const staticExamples = [
+        { titulo:'Derrame de líquidos en pasillo', descripcion:'Se detectó un derrame de aceite cerca de la máquina principal. Se colocó señalización y se reportó para limpieza inmediata.', area:'Producción', fecha:'2025-10-05' },
+        { titulo:'Extintor vencido', descripcion:'El extintor ubicado en la entrada muestra fecha de vencimiento pasada. Se solicita reemplazo urgente.', area:'Almacén', fecha:'2025-10-03' },
+        { titulo:'Cableado expuesto', descripcion:'Se observó cableado eléctrico sin protección en la zona de impresoras. Se recomienda cubrir y señalizar.', area:'Oficina', fecha:'2025-10-02' },
+        { titulo:'Uso incorrecto de EPP', descripcion:'Personal detectado sin casco de seguridad durante operación de maquinaria pesada.', area:'Taller', fecha:'2025-10-01' },
+        { titulo:'Obstrucción de salidas de emergencia', descripcion:'Material almacenado bloqueando acceso a salida de emergencia. Se solicita retiro inmediato.', area:'Planta', fecha:'2025-09-29' },
+        { titulo:'Ruido excesivo sin protección', descripcion:'Operarios trabajando en zona de alto ruido sin protección auditiva adecuada.', area:'Mantenimiento', fecha:'2025-09-28' },
+        { titulo:'Condición insegura en escalera', descripcion:'Escalera con peldaños flojos detectada en inspección rutinaria. Se reporta para reparación.', area:'Administración', fecha:'2025-09-27' },
+        { titulo:'Fuga de gas detectada', descripcion:'Olor a gas percibido en la zona de cocina. Se cierra válvula y se reporta para revisión técnica.', area:'Cocina', fecha:'2025-09-26' },
+      ].map(r=>({ ...r, fechaObj: new Date(r.fecha) }));
+      function normalizar(str){ return (str||'').toString().toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu,''); }
+      function render(){
+        const q = normalizar(buscarTexto.value);
+        const areaSel = filtroArea.value;
+        const mesSel = filtroMes.value;
+        let filtrados = dataCache.filter(r => {
+          const matchTexto = !q || normalizar(r.titulo).includes(q) || normalizar(r.descripcion).includes(q) || normalizar(r.area).includes(q);
+          const matchArea = !areaSel || r.area === areaSel;
+          const fecha = r.fechaObj instanceof Date ? r.fechaObj : new Date(r.fechaObj || r.fecha || Date.now());
+          const mes = fecha.getMonth();
+          const matchMes = !mesSel || parseInt(mesSel,10) === mes;
+          return matchTexto && matchArea && matchMes;
+        });
+        contenedor.innerHTML = '';
+        if(!filtrados.length){ msgVacio.classList.remove('d-none'); return; } else { msgVacio.classList.add('d-none'); }
+        filtrados.forEach(r => {
+          const fecha = r.fechaObj instanceof Date ? r.fechaObj : new Date(r.fechaObj || r.fecha || Date.now());
+          const fechaStr = fecha.toLocaleDateString('es-PE',{ day:'2-digit', month:'2-digit', year:'numeric'});
+          const card = document.createElement('div');
+          card.className = 'report-card';
+          card.innerHTML = `<span class='report-icon'><i class="bi bi-flag"></i></span>
+            <div class='d-flex flex-column gap-1'>
+              <h3 class='report-title mb-0'>${r.titulo || 'Sin título'}</h3>
+              <div class='report-meta'>Área: <span class='badge-area'>${r.area || 'General'}</span> | Fecha: ${fechaStr}</div>
+              <p class='report-desc mb-0'>${r.descripcion || ''}</p>
+            </div>`;
+          contenedor.appendChild(card);
+        });
+      }
+      // Ya no se poblan dinámicamente los selects; se usan opciones fijas provistas.
+      // Inicializar con ejemplos estáticos
+      dataCache = [...staticExamples];
+      render();
+      // Luego anexar datos de Firestore si existen
+      db.collection('reportes').orderBy('timestamp','desc').onSnapshot(snap => {
+        const nuevos = [];
+        snap.forEach(doc=>{
+          const d = doc.data();
+            let fechaObj = d.timestamp?.toDate ? d.timestamp.toDate() : (d.fecha ? new Date(d.fecha) : new Date());
+            nuevos.push({ id: doc.id, titulo: d.titulo||'Sin título', descripcion: d.descripcion||d.detalle||'', area: d.area||'General', fecha: d.fecha || '', fechaObj });
+        });
+        dataCache = [...staticExamples, ...nuevos];
+        render();
+      });
+      // Eventos (búsqueda manual con botón)
+      filtroArea.addEventListener('change', render);
+      filtroMes.addEventListener('change', render);
+      document.getElementById('btnBuscar').addEventListener('click', render);
+      buscarTexto.addEventListener('keyup', e=>{ if(e.key==='Enter'){ render(); }});
+      btnLimpiar.addEventListener('click', ()=>{ buscarTexto.value=''; filtroArea.value=''; filtroMes.value=''; render(); });
+    </script>
+  </body>
+</html>
