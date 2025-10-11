@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ejemplos de Reportes | SegurApp</title>
+    <link rel="icon" href="assets/img/LOGO-NEGRO.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
+    <meta name="title" content="Sistema de Reportes y Premios" />
+    <meta name="author" content="ColorlibHQ" />
+    <meta name="description" content="Sistema de reportes de seguridad - Ejemplos de reportes" />
+    <meta name="keywords" content="seguridad, reportes, ejemplos, actos inseguros" />
+    <meta name="supported-color-schemes" content="light dark" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./css/adminlte.css" />
+    <link rel="stylesheet" href="./css/perfil-menu.css" />
+    <style>
+      /* ---------- Layout base y corrección de scroll móvil ---------- */
+      html, body { height:100%; -webkit-text-size-adjust:100%; }
+      body { overflow:hidden; }
+      .app-wrapper { height:100%; display:flex; flex-direction:column; }
+      .app-main { flex:1 1 auto; min-height:0; display:flex; flex-direction:column; overflow-y:auto; -webkit-overflow-scrolling:touch; scroll-behavior:smooth; }
+      .app-content { flex:1 1 auto; padding-top: 2.5rem; padding-bottom: 3rem; }
+      :root{ --dvph:100vh; --nav-icon-size: clamp(16px, 2.2vw, 28px); --user-image-size: clamp(28px, 4.2vw, 42px); --brand-image-max: clamp(80px, 12vw, 140px); --action-btn-width: clamp(140px, 34vw, 220px); --action-btn-height: clamp(64px, 12vh, 100px); --nav-padding-y: 0.35rem; }
+      @supports (height:100dvh){ :root{ --dvph:100dvh; } }
+      .app-main { min-height: calc(var(--dvph) - 56px); }
+      /* ---------- Header y elementos ---------- */
+      .app-header .nav-icon, .app-header .bi, .app-header .fas { font-size: var(--nav-icon-size); line-height: 1; }
+      .user-image, .user-header img.rounded-circle { width: var(--user-image-size); height: var(--user-image-size); object-fit: cover; }
+      .brand-image { max-width: var(--brand-image-max); height: auto; }
+      .action-btn { width: var(--action-btn-width); height: var(--action-btn-height); display: flex; align-items: center; justify-content: center; gap: .6rem; padding: .6rem; text-align: center; }
+      .action-btn span { display: inline-block; font-size: clamp(.85rem, 1.6vw, 1rem); }
+      .app-header .nav-link { padding-top: var(--nav-padding-y); padding-bottom: var(--nav-padding-y); display: flex; align-items: center; gap: .5rem; }
+      @media (max-width: 420px) { .app-header .navbar-nav > li > a .d-none-mobile-hide { display: none; } .brand-text { font-size: .95rem; } }
+      /* ---------- Dropdown chat responsive ---------- */
+      @media (max-width: 600px) { #chatDropdownMenu { min-width: 100vw !important; max-width: 100vw !important; left: 0 !important; right: 0 !important; top: 56px !important; position: fixed !important; border-radius: 0 0 16px 16px !important; z-index: 9999 !important; } }
+      #chatDropdownMenu { min-width: 98vw !important; max-width: 98vw !important; left: 1vw !important; right: auto !important; }
+      .main-logo { max-width: clamp(120px, 28vw, 300px); width: 100%; height: auto; }
+      /* ---------- Tarjetas responsivas ---------- */
+      .report-list { display:flex; flex-wrap:wrap; gap:clamp(16px,2vw,32px) clamp(12px,2vw,24px); justify-content:center; align-items:stretch; }
+      .report-card { background:#fff; border-radius:18px; box-shadow:0 2px 12px rgba(0,0,0,0.08); margin-bottom:0; padding:clamp(16px,2.2vw,28px) clamp(14px,2vw,24px) clamp(14px,2vw,22px); transition:box-shadow .2s, transform .2s; display:flex; flex-direction:row; align-items:flex-start; gap:clamp(10px,1.3vw,18px); flex:1 1 clamp(260px,46%,480px); max-width:100%; position:relative; border-left:6px solid #007bff; cursor:pointer; animation:fadeInUp .55s both; }
+      .report-card:hover { box-shadow:0 8px 24px rgba(0,0,0,0.16); transform:translateY(-4px) scale(1.02); border-left:6px solid #ffc107; }
+      .report-icon { font-size:2.2rem; color:#007bff; flex-shrink:0; margin-top:2px; transition:color .2s; }
+      .report-card:hover .report-icon { color:#ffc107; }
+      .report-content { flex:1; display:flex; flex-direction:column; gap:6px; }
+      .report-title { font-size:1.18rem; font-weight:700; color:#007bff; margin-bottom:2px; letter-spacing:.01em; }
+      .report-meta { font-size:.95rem; color:#6c757d; margin-bottom:2px; }
+      .report-desc { font-size:1rem; color:#222; margin-bottom:0; line-height:1.35; }
+      /* Breakpoints */
+      @media (max-width: 992px){ .report-card { flex:1 1 clamp(280px,48%,440px); } }
+      @media (max-width: 768px){ .report-list { gap:18px 12px; } .report-card { flex:1 1 100%; } }
+      @media (max-width: 600px){ .report-list { gap:14px 0; padding:0 4px; } .report-card { border-radius:14px; padding:14px 14px 12px 14px; gap:12px; } .report-title { font-size:1.05rem; } .report-desc { font-size:.95rem; } }
+      @media (max-width: 360px){ .report-card { padding:12px 10px; } .report-title { font-size:1rem; } }
+      /* Animación y accesibilidad */
+      @keyframes fadeInUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+      @media (prefers-reduced-motion:reduce){ .report-card { animation:none; transition:none; } }
+      .dropdown-menu:not(.show){ display:none; }
+    </style>
+    <style>
+      @media (min-width:601px){
+        #chatDropdownMenu{left:auto!important;right:0!important;top:100%!important;position:absolute!important;min-width:clamp(340px,30vw,420px)!important;max-width:clamp(340px,30vw,420px)!important;width:clamp(340px,30vw,420px)!important;border-radius:12px!important;}
+      }
+    </style>
+  </head>
+  <body class="layout-fixed sidebar-expand-lg sidebar-open bg-body-tertiary">
+    <div class="app-wrapper">
+      <!--begin::Header-->
+      <nav class="app-header navbar navbar-expand bg-body">
+        <div class="container-fluid">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                <i class="bi bi-list text-dark"></i>
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto align-items-center">
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-chat-text" aria-hidden="true"></i>
+                <span class="navbar-badge badge text-bg-danger" id="chatCount">0</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="chatDropdownMenu" style="min-width:320px; max-width:100vw; left:0; right:0;">
+                <div id="chatMessages" style="max-height:300px; overflow-y:auto; padding:10px 0;"></div>
+                <div class="dropdown-divider"></div>
+                <form id="chatForm" class="px-3 pb-2">
+                  <div class="input-group">
+                    <input type="text" id="chatInput" class="form-control" placeholder="Escribe un mensaje..." autocomplete="off" required />
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i></button>
+                  </div>
+                </form>
+              </div>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <i class="bi bi-bell-fill" aria-hidden="true"></i>
+                <span class="navbar-badge badge text-bg-warning" id="notificacionesCount">0</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end" id="notificacionesDropdownMenu"></div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" data-lte-toggle="fullscreen" aria-label="Pantalla completa">
+                <i data-lte-icon="maximize" class="bi bi-arrows-fullscreen" aria-hidden="true"></i>
+                <i data-lte-icon="minimize" class="bi bi-fullscreen-exit" style="display: none" aria-hidden="true"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link" data-bs-toggle="dropdown" href="#" aria-haspopup="true" aria-expanded="false">
+                <img src="./assets/img/user2-160x160.jpg" class="user-image rounded-circle" id="userImage" alt="Usuario" />
+                <span id="userName" class="d-none d-md-inline ms-2"></span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <div class="dropdown-item-text p-0" style="min-width:240px;">
+                  <div style="background:#6c63ff; border-radius:12px 12px 0 0; padding:24px 0 16px 0; text-align:center;">
+                    <img src="./assets/img/user2-160x160.jpg" class="rounded-circle shadow mb-2" alt="Usuario" style="width:72px; height:72px; object-fit:cover; border:3px solid #fff; box-shadow:0 2px 8px rgba(0,0,0,0.08);" />
+                    <div class="fw-bold mt-2" id="userFullName" style="font-size:1.12rem; color:#fff;"></div>
+                    <div class="text-light small mb-1" id="userSince" style="color:#f3f3f3;">Soporte</div>
+                  </div>
+                  <div class="px-3 py-3" style="background:#fff; border-radius:0 0 12px 12px;">
+                    <div class="profile-btn-row">
+                      <button class="profile-btn profile-btn-primary" id="changePhotoBtn">Cambiar foto</button>
+                      <button class="profile-btn profile-btn-danger" id="logoutBtn">Cerrar sesión</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var email = localStorage.getItem('userEmail') || 'demo@segurapp.com';
+          document.getElementById('userName').textContent = email;
+          document.getElementById('userFullName').textContent = 'Perfil: ' + email;
+        });
+      </script>
+      <!--end::Header-->
+      <!--begin::Sidebar-->
+      <aside class="app-sidebar bg-body-secondary shadow" data-bs-theme="dark">
+        <div class="sidebar-brand">
+          <a href="./inicio.html" class="brand-link">
+            <img src="./assets/img/LOGOS_Mesa de trabajo 1-03.png" alt="AdminLTE Logo" class="brand-image opacity-75 shadow" />
+            <span class="brand-text fw-light">Sistema de reporte</span>
+          </a>
+        </div>
+        <div class="sidebar-wrapper">
+          <nav class="mt-2">
+            <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="navigation" aria-label="Main navigation" data-accordion="false" id="navigation">
+              <li class="nav-header">Reporte</li>
+              <li class="nav-item"><a href="EjemplosReportes.html" class="nav-link active"><i class="bi bi-file-text"></i> Mis reportes</a></li>
+              <li class="nav-item"><a href="TodosReportes.html" class="nav-link"><i class="bi bi-clipboard-check"></i><p>Todos los reportes</p></a></li>
+              <li class="nav-header">Soporte</li>
+              <li class="nav-item"><a href="https://wa.me/51946428494?text=hola,%20necesito%20ayuda%20con%20la%20app%20web" class="nav-link" target="_blank"><i class="bi bi-question-circle"></i><p>Ayuda</p></a></li>
+              <li class="nav-header">Información</li>
+              <li class="nav-item"><a href="./assets/documentos/actos y condiciones inseguras.pdf" class="nav-link" download><i class="bi bi-file-earmark-text"></i><p>Tipos de reportes</p></a></li>
+              <li class="nav-item"><a href="./assets/documentos/actos y condiciones inseguras.pdf" class="nav-link" download><i class="bi bi-exclamation-triangle"></i><p>¿Qué es un acto o condición insegura?</p></a></li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+      <!--end::Sidebar-->
+      <!--begin::App Main-->
+      <main class="app-main">
+        <div class="app-content">
+          <div class="container">
+            <h2 class="mb-4 fw-bold text-primary text-center">Mis Reportes</h2>
+            <div class="report-list">
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-droplet"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Derrame de líquidos en pasillo</div>
+                  <div class="report-meta">Área: Producción &nbsp;|&nbsp; Fecha: 05/10/2025</div>
+                  <div class="report-desc">Se detectó un derrame de aceite cerca de la máquina principal. Se colocó señalización y se reportó para limpieza inmediata.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-fire"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Extintor vencido</div>
+                  <div class="report-meta">Área: Almacén &nbsp;|&nbsp; Fecha: 03/10/2025</div>
+                  <div class="report-desc">El extintor ubicado en la entrada muestra fecha de vencimiento pasada. Se solicita reemplazo urgente.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-lightning-charge"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Cableado expuesto</div>
+                  <div class="report-meta">Área: Oficina &nbsp;|&nbsp; Fecha: 02/10/2025</div>
+                  <div class="report-desc">Se observó cableado eléctrico sin protección en la zona de impresoras. Se recomienda cubrir y señalizar.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-person-bounding-box"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Uso incorrecto de EPP</div>
+                  <div class="report-meta">Área: Taller &nbsp;|&nbsp; Fecha: 01/10/2025</div>
+                  <div class="report-desc">Personal detectado sin casco de seguridad durante operación de maquinaria pesada.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-door-open"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Obstrucción de salidas de emergencia</div>
+                  <div class="report-meta">Área: Planta &nbsp;|&nbsp; Fecha: 29/09/2025</div>
+                  <div class="report-desc">Material almacenado bloqueando acceso a salida de emergencia. Se solicita retiro inmediato.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-volume-up"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Ruido excesivo sin protección</div>
+                  <div class="report-meta">Área: Mantenimiento &nbsp;|&nbsp; Fecha: 28/09/2025</div>
+                  <div class="report-desc">Operarios trabajando en zona de alto ruido sin protección auditiva adecuada.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-ladder"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Condición insegura en escalera</div>
+                  <div class="report-meta">Área: Administración &nbsp;|&nbsp; Fecha: 27/09/2025</div>
+                  <div class="report-desc">Escalera con peldaños flojos detectada en inspección rutinaria. Se reporta para reparación.</div>
+                </div>
+              </div>
+              <div class="report-card">
+                <span class="report-icon"><i class="bi bi-exclamation-octagon"></i></span>
+                <div class="report-content">
+                  <div class="report-title">Fuga de gas detectada</div>
+                  <div class="report-meta">Área: Cocina &nbsp;|&nbsp; Fecha: 26/09/2025</div>
+                  <div class="report-desc">Olor a gas percibido en la zona de cocina. Se cierra válvula y se reporta para revisión técnica.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!--end::App Main-->
+      <footer class="app-footer text-center py-2 bg-body-secondary">
+        <small>© 2025 SegurApp - Todos los derechos reservados</small>
+      </footer>
+    </div>
+    <!-- Scripts principales -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="./js/adminlte.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+          logoutBtn.addEventListener('click', function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+          });
+        }
+        const sidebarWrapper = document.querySelector('.sidebar-wrapper');
+        if (sidebarWrapper && OverlayScrollbarsGlobal?.OverlayScrollbars !== undefined) {
+          OverlayScrollbarsGlobal.OverlayScrollbars(sidebarWrapper, { scrollbars: { theme: 'os-theme-light', autoHide: 'leave', clickScroll: true } });
+        }
+        /* --- Scroll & altura dinámica para móviles --- */
+        function setDynamicVH(){
+          const vh = window.innerHeight * 0.01;
+          document.documentElement.style.setProperty('--vh-unit', `${vh}px`);
+        }
+        setDynamicVH();
+        window.addEventListener('resize', setDynamicVH);
+        const main = document.querySelector('.app-main');
+        if(main){ main.addEventListener('touchmove', ()=>{}, {passive:true}); }
+        // Fallback si no se genera scroll (contenido corto) -> permitir body scroll
+        setTimeout(()=>{ if(main && main.scrollHeight <= main.clientHeight + 4){ document.body.style.overflowY='auto'; } }, 700);
+      });
+    </script>
+    <!-- Firebase (placeholder config) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script>
+      const firebaseConfig = { apiKey: "TU_API_KEY", authDomain: "TU_AUTH_DOMAIN", projectId: "TU_PROJECT_ID", storageBucket: "TU_STORAGE_BUCKET", messagingSenderId: "TU_MESSAGING_SENDER_ID", appId: "TU_APP_ID" };
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+      // Notificaciones dinámicas
+      const notificacionesDropdown = document.getElementById('notificacionesDropdownMenu');
+      const notificacionesBadge = document.getElementById('notificacionesCount');
+      db.collection('reportes').orderBy('timestamp', 'desc').onSnapshot(snapshot => {
+        let count = 0;
+        let html = '<span class="dropdown-item dropdown-header">' + snapshot.size + ' Notificaciones</span><div class="dropdown-divider"></div>';
+        snapshot.forEach(doc => {
+          const r = doc.data();
+          html += `<a href="#" class="dropdown-item d-flex align-items-start gap-2">\n            <i class="bi bi-exclamation-triangle-fill text-warning fs-5 mt-1"></i>\n            <div class="flex-grow-1">\n              <span>Nuevo reporte: ${r.titulo || 'Sin título'}</span>\n              <div class="text-muted small">${r.usuario || 'Anónimo'} - ${r.fecha || ''}</div>\n            </div>\n          </a><div class="dropdown-divider"></div>`;
+          count++;
+        });
+        html += '<a href="notificaciones.html" class="dropdown-item dropdown-footer text-primary fw-semibold">Ver todas las notificaciones</a>';
+        notificacionesDropdown.innerHTML = html;
+        notificacionesBadge.textContent = count;
+      });
+      // Chat
+      const chatMessages = document.getElementById('chatMessages');
+      const chatForm = document.getElementById('chatForm');
+      const chatInput = document.getElementById('chatInput');
+      const chatCount = document.getElementById('chatCount');
+      db.collection('chat').orderBy('timestamp').onSnapshot(snapshot => {
+        chatMessages.innerHTML = '';
+        let count = 0;
+        snapshot.forEach(doc => {
+          const msg = doc.data();
+            const div = document.createElement('div');
+            div.className = 'px-3 py-2';
+            div.innerHTML = `<strong>${msg.user || 'Anónimo'}:</strong> ${msg.text}`;
+            chatMessages.appendChild(div);
+            count++;
+        });
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatCount.textContent = count;
+      });
+      chatForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const text = chatInput.value.trim();
+        if (text) {
+          db.collection('chat').add({ text, user: window.userData?.name || 'Anónimo', timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+          chatInput.value = '';
+        }
+      });
+    </script>
+  </body>
+</html>

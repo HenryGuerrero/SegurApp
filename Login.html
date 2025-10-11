@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Iniciar sesión - SegurApp</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="assets/img/LOGO-NEGRO.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+    <style>
+      body {
+        min-height: 100vh;
+        background: linear-gradient(120deg, #6c63ff 0%, #007bff 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Source Sans 3', sans-serif;
+      }
+      .login-card {
+        background: #fff;
+        border-radius: 18px;
+        box-shadow: 0 6px 32px rgba(0,0,0,0.12);
+        padding: 2.5rem 2rem 2rem 2rem;
+        max-width: 370px;
+        width: 100%;
+        position: relative;
+      }
+      .login-logo {
+        display: block;
+        margin: 0 auto 1.5rem auto;
+        max-width: 120px;
+        opacity: 0.95;
+      }
+      .login-title {
+        font-weight: 700;
+        color: #6c63ff;
+        text-align: center;
+        margin-bottom: 1.2rem;
+      }
+      .form-label {
+        font-weight: 600;
+        color: #333;
+      }
+      .btn-login {
+        background: #6c63ff;
+        color: #fff;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.7rem 1.2rem;
+        font-size: 1.1rem;
+        transition: background 0.2s;
+      }
+      .btn-login:hover {
+        background: #007bff;
+      }
+      .login-footer {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.95rem;
+        color: #888;
+      }
+      .btn-help, .btn-whatsapp {
+        position: absolute;
+        top: 1.2rem;
+        font-size: 1.3rem;
+        border: none;
+        background: none;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+      .btn-help { right: 3.2rem; color: #6c63ff; }
+      .btn-help:hover { color: #007bff; }
+      .btn-whatsapp { right: 1.2rem; color: #25d366; }
+      .btn-whatsapp:hover { color: #128c7e; }
+      .whatsapp-dropdown {
+        position: absolute;
+        top: 3.2rem;
+        right: 1.2rem;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+        padding: 1rem 1.2rem;
+        min-width: 220px;
+        z-index: 9999;
+        display: none;
+      }
+      .whatsapp-dropdown.show { display: block; }
+      .whatsapp-number {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.7rem;
+      }
+      .whatsapp-number:last-child { margin-bottom: 0; }
+      .whatsapp-number a {
+        color: #25d366;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .whatsapp-number a:hover { text-decoration: underline; }
+      .modal-content { border-radius: 14px; }
+    </style>
+  </head>
+  <body>
+    <div class="login-card position-relative">
+      <img src="assets/img/LOGO-NEGRO.png" alt="SegurApp Logo" class="login-logo" />
+      <h2 class="login-title">Iniciar sesión</h2>
+      <div id="sedeSeleccionada" class="mb-3 text-center fw-semibold text-primary" style="font-size:1.1rem;"></div>
+      <form id="loginForm" autocomplete="off">
+        <div class="mb-3">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="email" placeholder="usuario@empresa.com" required />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password" placeholder="Contraseña" required />
+        </div>
+        <button type="submit" class="btn btn-login w-100">Entrar</button>
+        <div id="loginMsg" class="mt-3 text-center"></div>
+      </form>
+      <button class="btn-help" type="button" data-bs-toggle="modal" data-bs-target="#helpModal" title="Ayuda"><i class="bi bi-question-circle-fill"></i></button>
+      <button class="btn-whatsapp" type="button" id="whatsappBtn" title="Soporte WhatsApp"><i class="bi bi-whatsapp"></i></button>
+      <div class="whatsapp-dropdown" id="whatsappDropdown">
+        <div class="whatsapp-number">
+          <i class="bi bi-whatsapp"></i>
+          <a href="https://wa.me/51946428494" target="_blank">+51 946428494</a>
+        </div>
+        <div class="whatsapp-number">
+          <i class="bi bi-whatsapp"></i>
+          <a href="https://wa.me/51989778136" target="_blank">+51 989778136</a>
+        </div>
+        <div class="mt-2 text-muted small">Soporte técnico y dudas</div>
+      </div>
+      <div class="login-footer">© 2025 SegurApp - Todos los derechos reservados</div>
+    </div>
+
+    <!-- Modal Ayuda -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-labelledby="helpModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="helpModalLabel">¿Necesitas ayuda?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <ul class="mb-2">
+              <li>Ingresa tu correo y contraseña proporcionados por la empresa.</li>
+              <li>Si olvidaste tu contraseña, contacta a soporte por WhatsApp.</li>
+              <li>Para dudas sobre el sistema, usa los números de soporte.</li>
+            </ul>
+            <div class="text-center">
+              <i class="bi bi-whatsapp text-success"></i> <span class="fw-semibold">Soporte WhatsApp:</span><br>
+              <span class="text-primary">+51 946428494</span> / <span class="text-primary">+51 989778136</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script>
+      /*
+      // Configura tu proyecto Firebase aquí
+      const firebaseConfig = {
+        apiKey: "TU_API_KEY",
+        authDomain: "TU_AUTH_DOMAIN",
+        projectId: "TU_PROJECT_ID",
+        storageBucket: "TU_STORAGE_BUCKET",
+        messagingSenderId: "TU_MESSAGING_SENDER_ID",
+        appId: "TU_APP_ID"
+      };
+      if (!window.firebase?.apps?.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+      const auth = firebase.auth();
+      // Login funcional con Firebase
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const msg = document.getElementById('loginMsg');
+        msg.textContent = '';
+        auth.signInWithEmailAndPassword(email, password)
+          .then(userCredential => {
+            msg.textContent = '¡Bienvenido! Redirigiendo...';
+            msg.style.color = 'green';
+            setTimeout(() => {
+              window.location.href = 'inicio.html';
+            }, 1200);
+          })
+          .catch(error => {
+            msg.textContent = 'Error: ' + (error.code === 'auth/wrong-password' ? 'Contraseña incorrecta.' : error.message);
+            msg.style.color = 'red';
+          });
+      });
+      */
+      // Login DEMO: solo permite el correo demo@segurapp.com y contraseña demo1234
+      document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const msg = document.getElementById('loginMsg');
+        msg.textContent = '';
+        // Mostrar sede seleccionada
+        const sede = localStorage.getItem('sedeSeleccionada');
+        const sedeDiv = document.getElementById('sedeSeleccionada');
+        if (sede) {
+          sedeDiv.textContent = `Sede seleccionada: ${sede}`;
+        } else {
+          sedeDiv.textContent = 'Selecciona tu sede primero.';
+        }
+
+        // Login validación por sede y correo
+        const validCreds = {
+          'Lima': [
+            { email: 'deajana@lima.com', password: 'deajana1234' },
+            { email: 'perla@lima.com', password: 'perla1234' },
+            { email: 'diego@lima.com', password: 'diego1234' },
+            { email: 'alexandra@lima.com', password: 'alexandra1234' },
+            { email: 'priscila@lima.com', password: 'priscila1234' },
+            { email: 'henryadmin@lima.com', password: 'henry1234' },
+            { email: 'roi@lima.com', password: 'roi1234' },
+            { email: 'angie@lima.om', password: 'angie1234' },
+            { email: 'elmer@lima.com', password: 'elmer1234' },
+            { email: 'aylin@lima.com', password: 'aylin1234' },
+            { email: 'manuel@lima.com', password: 'manuel1234' },
+            { email: 'maria@lima.com', password: 'maria1234' },
+            { email: 'luigiadmin@lima.com', password: 'luigi1234' },
+            { email: 'renato@lima.com', password: 'renato1234' }
+          ],
+          'Arequipa': [
+            { email: 'henryadmin@arequipa.com', password: 'henry1234' },
+            { email: 'luigiadmin@arequipa.com', password: 'luigi1234' }
+          ]
+        };
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          const email = document.getElementById('email').value.trim();
+          const password = document.getElementById('password').value;
+          const msg = document.getElementById('loginMsg');
+          msg.textContent = '';
+          if (!sede || !validCreds[sede]) {
+            msg.textContent = 'Debes seleccionar una sede antes de iniciar sesión.';
+            msg.style.color = 'red';
+            return;
+          }
+          const userFound = validCreds[sede].find(u => u.email === email && u.password === password);
+          const isLimaUser = validCreds['Lima'].some(u => u.email === email);
+          const isArequipaUser = validCreds['Arequipa'].some(u => u.email === email);
+          if (userFound) {
+            // Bloquear acceso cruzado
+            if (sede === 'Lima' && isArequipaUser) {
+              msg.textContent = 'Este usuario solo puede acceder en la sede Arequipa.';
+              msg.style.color = 'red';
+              return;
+            }
+            if (sede === 'Arequipa' && isLimaUser) {
+              msg.textContent = 'Este usuario solo puede acceder en la sede Lima.';
+              msg.style.color = 'red';
+              return;
+            }
+            localStorage.setItem('userEmail', email);
+            msg.textContent = '¡Bienvenido! Redirigiendo...';
+            msg.style.color = 'green';
+            setTimeout(() => {
+              window.location.href = sede === 'Lima' ? 'inicio.html' : 'indexarequipa.html';
+            }, 1200);
+          } else {
+            msg.textContent = 'Correo o contraseña incorrectos.';
+            msg.style.color = 'red';
+          }
+        });
+      });
+
+      // WhatsApp dropdown
+      const whatsappBtn = document.getElementById('whatsappBtn');
+      const whatsappDropdown = document.getElementById('whatsappDropdown');
+      document.addEventListener('click', function(e) {
+        if (e.target === whatsappBtn || whatsappBtn.contains(e.target)) {
+          whatsappDropdown.classList.toggle('show');
+        } else if (!whatsappDropdown.contains(e.target)) {
+          whatsappDropdown.classList.remove('show');
+        }
+      });
+
+      // Mostrar sede seleccionada
+      const sede = localStorage.getItem('sedeSeleccionada');
+      const sedeDiv = document.getElementById('sedeSeleccionada');
+      if (sede) {
+        sedeDiv.textContent = `Sede seleccionada: ${sede}`;
+      } else {
+        sedeDiv.textContent = 'Selecciona tu sede primero.';
+      }
+    </script>
+  </body>
+</html>
